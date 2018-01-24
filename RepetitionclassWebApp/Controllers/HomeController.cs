@@ -3,15 +3,25 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using RepetitionclassWebApp.Interfaces;
 using RepetitionclassWebApp.Models;
 
 namespace RepetitionclassWebApp.Controllers
 {
     public class HomeController : Controller
     {
+        private ITimeProvider timeProvider;
+        public HomeController(ITimeProvider _timeProvider)
+        {
+
+            timeProvider = _timeProvider;
+
+        }
         public IActionResult Index()
         {
+            ViewData["Time"] = timeProvider.Now.ToString();
             return View();
         }
 
@@ -21,12 +31,22 @@ namespace RepetitionclassWebApp.Controllers
 
             return View();
         }
-
+        [Authorize(Roles = "Admin")]
         public IActionResult Contact()
         {
             ViewData["Message"] = "Your contact page.";
 
             return View();
+        }
+        public IActionResult IncreaseMonth()
+        {
+            timeProvider.Now = timeProvider.Now.AddMonths(1);
+            return View("Index");
+        }
+        public IActionResult DecreaseMonth()
+        {
+            timeProvider.Now = timeProvider.Now.AddMonths(-1);
+            return View("Index");
         }
 
         public IActionResult Error()

@@ -1,3 +1,17 @@
-﻿@{
-    Layout = "_Layout";
+﻿
+@inject RepetitionclassWebApp.Interfaces.ITimeProvider myTimeProvider
+
+@{
+    var yyyymmdd = 10000 * myTimeProvider.Now.Year + 100 * myTimeProvider.Now.Month + myTimeProvider.Now.Day;
 }
+@if (yyyymmdd > 20180101)
+    
+        {
+            Layout = "_Layout2018";
+        }
+        else
+        {
+            Layout = "_Layout";
+
+        }
+    }

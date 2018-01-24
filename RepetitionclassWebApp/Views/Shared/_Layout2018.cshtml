@@ -9,6 +9,17 @@
     <environment include="Development">
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
         <link rel="stylesheet" href="~/css/site.css" />
+        @{
+            var yyyymmdd = 10000 * myTimeProvider.Now.Year + 100 * myTimeProvider.Now.Month + myTimeProvider.Now.Day;
+        }     
+        @if (yyyymmdd > 20180101)
+    {
+
+
+        <link rel="stylesheet" href="~/css/site2018.css" />
+
+
+    }
         <link href="https://fonts.googleapis.com/css?family=Gorditas" rel="stylesheet">
 
     </environment>
@@ -43,8 +54,6 @@
                     <li><a asp-area="" asp-controller="" asp-action="">@myTimeProvider.Now.ToShortDateString()</a></li>
                     <li><a asp-area="" asp-controller="Home" asp-action="IncreaseMonth">+1 Increse Month</a></li>
                     <li><a asp-area="" asp-controller="Home" asp-action="DecreaseMonth">-1 Decrese Month</a></li>
-
-
                 </ul>
                 @await Html.PartialAsync("_LoginPartial")
             </div>
