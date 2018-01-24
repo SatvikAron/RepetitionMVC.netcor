@@ -13,6 +13,8 @@ using RepetitionclassWebApp.Models;
 using RepetitionclassWebApp.Services;
 using RepetitionclassWebApp.Interfaces;
 using RepetitionclassWebApp.TimeServices;
+using System.Globalization;
+using Microsoft.AspNetCore.Localization;
 
 namespace RepetitionclassWebApp
 {
@@ -42,6 +44,7 @@ namespace RepetitionclassWebApp
             services.AddTransient<IEmailSender, EmailSender>();
 
             services.AddMvc();
+            services.AddLocalization();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -49,6 +52,23 @@ namespace RepetitionclassWebApp
              UserManager<ApplicationUser> userManager,
             RoleManager<IdentityRole> roleManager)
         {
+            var suppoertedCultures = new[]
+          {
+                new CultureInfo("en-US"),
+                new CultureInfo("sv-SE")
+
+            };
+            var options = new RequestLocalizationOptions
+            {
+                DefaultRequestCulture = new RequestCulture("sv-SE"),
+                SupportedCultures = suppoertedCultures,
+                SupportedUICultures = suppoertedCultures
+            };
+            options.RequestCultureProviders = new[]
+            {
+                new CookieRequestCultureProvider(){Options=options}
+            };
+            app.UseRequestLocalization(options);
             if (env.IsDevelopment())
             {
                 app.UseBrowserLink();

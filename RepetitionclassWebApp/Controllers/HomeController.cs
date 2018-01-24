@@ -5,17 +5,23 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Localization;
 using RepetitionclassWebApp.Interfaces;
 using RepetitionclassWebApp.Models;
+using RepetitionclassWebApp.Resources;
 
 namespace RepetitionclassWebApp.Controllers
 {
     public class HomeController : Controller
     {
+        
+        private readonly IStringLocalizer localizer;
+        
         private ITimeProvider timeProvider;
-        public HomeController(ITimeProvider _timeProvider)
+        public HomeController(ITimeProvider _timeProvider, IStringLocalizerFactory factory)
         {
-
+            
+            localizer = factory.Create(typeof(SharedResources));
             timeProvider = _timeProvider;
 
         }
@@ -31,10 +37,10 @@ namespace RepetitionclassWebApp.Controllers
 
             return View();
         }
-        [Authorize(Roles = "Admin")]
+    
         public IActionResult Contact()
         {
-            ViewData["Message"] = "Your contact page.";
+            ViewData["Message"] = localizer["ContactUs"];
 
             return View();
         }
